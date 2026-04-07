@@ -1,20 +1,32 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { ErrorBoundary } from './src/components/ErrorBoundary';
+import { Game } from './src/components/Game';
+import { ThemeProvider, useAppTheme } from './src/theme/ThemeContext';
 
-export default function App() {
+function AppShell() {
+  const { theme } = useAppTheme();
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View style={[styles.root, { backgroundColor: theme.background }]}>
+      <StatusBar style={theme.statusBarStyle} />
+      <ErrorBoundary>
+        <Game />
+      </ErrorBoundary>
     </View>
   );
 }
 
+export default function App() {
+  return (
+    <ThemeProvider>
+      <AppShell />
+    </ThemeProvider>
+  );
+}
+
 const styles = StyleSheet.create({
-  container: {
+  root: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });
